@@ -41,7 +41,7 @@ end
 # Get last 10 mails
 def get_mails(token)
   # URL /<email>/messages
-  url = "https://graph.microsoft.com/v1.0/users/#{ENV['INBOX']}/messages"
+  url = "/messages"
   request = send_request(token, url)
 
   return request['value'] if request
@@ -51,7 +51,7 @@ end
 # Get a specific mail by its id
 def get_mail(token, id)
   # URL /<email>/messages/<id>
-  url = "https://graph.microsoft.com/v1.0/users/#{ENV['INBOX']}/messages/#{id}"
+  url = "/messages/#{id}"
   request = send_request(token, url)
 
   return request if request
@@ -61,7 +61,7 @@ end
 # Download attachments
 def attachments(token, id)
   # URL /<email>/messages/<id>/attachments
-  url = "https://graph.microsoft.com/v1.0/users/#{ENV['INBOX']}/messages/#{id}/attachments"
+  url = "/messages/#{id}/attachments"
   request = send_request(token, url)
 
   if request
