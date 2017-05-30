@@ -80,15 +80,23 @@ def loop_mails(mails)
   end
 end
 
-def send_request(token, url)
-  conn = Faraday.new url: url do |faraday|
+def send_request(token, url, delete=false)
+  endpoint = "https://graph.microsoft.com/v1.0/users/#{ENV['INBOX']}#{url}"
+  conn = Faraday.new url: endpoint do |faraday|
     faraday.response :logger                  # log requests to STDOUT
     faraday.adapter  Faraday.default_adapter  # make requests with Net::HTTP
   end
 
-  response = conn.get do |req|
-    req.headers['Content-Type'] = 'application/json'
-    req.headers['Authorization'] = "Bearer #{token}"
+  unless delete
+    response = conn.get do |req|
+      req.headers['Content-Type'] = 'application/json'
+      req.headers['Authorization'] = "Bearer #{token}"
+    end
+  else
+    response = conn.delete do |req|
+      req.headers['Content-Type'] = 'application/json'
+      req.headers['Authorization'] = "Bearer #{token}"
+    end
   end
 
   if response.status.to_i == 200
