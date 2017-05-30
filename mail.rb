@@ -92,6 +92,17 @@ def folder(token, id)
   return request['value'] if request
   return false
 end
+
+# Delete an email
+def delete_mail(token, id)
+  # URL /<email>/messages
+  url = "/messages/#{id}"
+  request = send_request(token, url, true)
+
+  return request['value'] if request
+  return false
+end
+
 def loop_mails(mails)
   mails.each do |mail|
     puts "Subject: #{mail['subject']} | From: | ID: #{mail['id']}"
